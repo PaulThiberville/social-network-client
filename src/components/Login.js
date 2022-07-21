@@ -1,35 +1,21 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../redux/slices/user";
-import { register, login } from "../services/user";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { userActions } from "../redux/slices/user";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.user);
 
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const logged = await login(email, password);
-    if (logged.error) {
-      return console.log("Error on logged :", logged.error);
-    }
-    if (logged.userId && logged.token) {
-      console.log("Logged : ", logged);
-      dispatch(
-        setUser({
-          id: logged.userId,
-          token: logged.token,
-        })
-      );
-    }
-    navigate("/");
+    dispatch(userActions.login({ email, password }));
   };
 
   return (
     <>
+      {user.error && <p>Error : {user.error}</p>}
       <h1>Login</h1>
       <form>
         <h2>Email</h2>
@@ -45,7 +31,7 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />
-        <button onClick={async (e) => await handleSubmit(e)}>Login</button>
+        <button onClick={async (e) => await handleLogin(e)}>Login</button>
       </form>
     </>
   );

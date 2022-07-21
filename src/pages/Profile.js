@@ -6,32 +6,26 @@ import { useSelector, useDispatch } from "react-redux";
 //components
 import Post from "../components/Post";
 
-//services
-import { getAllPostsByUser } from "../services/post";
-import { getOne } from "../services/user";
-
 //actions
-import { setPosts } from "../redux/slices/posts";
+import { postsActions } from "../redux/slices/posts";
+import { getOne } from "../services/user";
 
 const Profile = () => {
   const { id } = useParams();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
   const [profile, setProfile] = useState();
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector((state) => state.posts.posts);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getProfile = async () => {
       //Fetch profile infos
       const response = await getOne(user, id);
-      console.log(response);
       if (response._id) {
         //Set profile infos
         setProfile(response);
-        const allPosts = await getAllPostsByUser(user, id);
-        dispatch(setPosts(allPosts));
-      } else {
-        console.log("error");
+
+        dispatch(postsActions.setProfilePosts({ user, id }));
       }
     };
     getProfile();
@@ -53,8 +47,8 @@ const Profile = () => {
       }
       {
         //map posts
-        posts.all !== [] &&
-          posts.all.map((post) => {
+        posts.length &&
+          posts.map((post) => {
             return <Post key={post._id} post={post} />;
           })
       }

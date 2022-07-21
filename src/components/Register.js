@@ -1,43 +1,23 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../redux/slices/user";
-import { register, login } from "../services/user";
+import { userActions } from "../redux/slices/user";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setContirm] = useState("");
   const [userName, setUserName] = useState("");
-  const navigate = useNavigate();
+  const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const registered = await register(userName, email, password);
-    if (registered.error) {
-      return console.log("Error on registered :", registered.error);
-    }
-    console.log("Registered :", registered);
-
-    const logged = await login(email, password);
-    if (logged.error) {
-      return console.log("Error on logged :", logged.error);
-    }
-    if (logged.userId && logged.token) {
-      console.log("Logged : ", logged);
-      dispatch(
-        setUser({
-          id: logged.userId,
-          token: logged.token,
-        })
-      );
-    }
-    navigate("/");
+    dispatch(userActions.register({ userName, email, password }));
   };
 
   return (
     <>
+      {user.error && <p>Error: {user.error}</p>}
       <h1>Register</h1>
       <form>
         <h2>User Name</h2>

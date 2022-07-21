@@ -1,43 +1,31 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setPosts, addComment } from "../redux/slices/posts";
 import { useEffect, useState } from "react";
-import { createComment, likeComment, unlikeComment } from "../services/comment";
 import Comment from "../components/Comment";
 import { useParams } from "react-router-dom";
 import Post from "../components/Post";
-import { getOnePost } from "../services/post";
+import { postsActions } from "../redux/slices/posts";
 
 const FullPost = () => {
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user.user);
   const [text, setText] = useState("");
-  const params = useParams();
-  const posts = useSelector((state) => state.posts);
+  const { id } = useParams();
+  const posts = useSelector((state) => state.posts.posts);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getPost = async () => {
-      const response = await getOnePost(user, params.id);
-      console.log("Get one post result :", response);
-      if (response._id) {
-        dispatch(setPosts([response]));
-      }
-    };
-    getPost();
+    dispatch(postsActions.setFullPost({ user, id }));
   }, []);
 
   const handleCreateComment = async (e) => {
     e.preventDefault();
-    const response = await createComment(user, text, posts.all[0]._id);
-    if (response._id) {
-      dispatch(addComment(response));
-    }
+    dispatch(postsActions.addComment({ user, text, id }));
   };
 
-  if (!posts.all[0]) return null;
+  if (!posts.length) return null;
   return (
     <>
       <h1>Full post</h1>
-      <Post post={posts.all[0]}></Post>
+      <Post post={posts[0]}></Post>
       <form>
         <input
           type={"text"}
@@ -48,7 +36,7 @@ const FullPost = () => {
           Comment
         </button>
       </form>
-      {posts.all[0].comments?.map((comment) => {
+      {posts[0].comments?.map((comment) => {
         return <Comment key={comment._id} comment={comment} />;
       })}
     </>

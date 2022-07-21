@@ -1,32 +1,23 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createPost, getAllPosts } from "../services/post";
-import { setPosts } from "../redux/slices/posts";
 import Post from "../components/Post";
+import { postsActions } from "../redux/slices/posts";
 
 const Home = () => {
-  const posts = useSelector((state) => state.posts);
-  const user = useSelector((state) => state.user);
+  const posts = useSelector((state) => state.posts.posts);
+  const user = useSelector((state) => state.user.user);
   const [text, setText] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getPosts = async () => {
-      const result = await getAllPosts(user);
-      if (result.error) {
-        console.log("Error on Home GetPosts", result.error);
-      } else {
-        console.log("Home have these posts : ", result);
-        dispatch(setPosts(result));
-      }
-    };
-    getPosts();
+    dispatch(postsActions.setHomePosts({ user: user }));
   }, []);
 
-  const handleCreatePost = async (e) => {
+  const handleCreatePost = (e) => {
     e.preventDefault();
-    const result = await createPost(user, text, "default");
-    dispatch(setPosts([...posts.all, result]));
+    dispatch(
+      postsActions.addPost({ user: user, text: text, imageUrl: "default" })
+    );
   };
 
   return (
@@ -40,11 +31,12 @@ const Home = () => {
           value={text}
           placeholder={"Yo ! Wassup ?"}
         />
-        <button onClick={async (e) => await handleCreatePost(e)}>Post</button>
+        <button onClick={(e) => handleCreatePost(e)}>Post</button>
       </form>
-      {posts.all?.map((aPost) => {
-        return <Post key={aPost._id} post={aPost} />;
-      })}
+      {posts.length &&
+        posts.map((aPost) => {
+          return <Post key={aPost._id} post={aPost} />;
+        })}
     </>
   );
 };
