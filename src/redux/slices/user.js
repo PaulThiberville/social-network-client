@@ -28,6 +28,7 @@ function createReducers() {
       state.user = action.payload;
     },
     clearUser: (state) => {
+      console.log("Clearing User");
       localStorage.setItem("user", JSON.stringify({}));
       state.user = {};
     },
@@ -51,9 +52,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ email: args.email, password: args.password }),
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -70,9 +71,9 @@ function createExtraActions() {
           email: args.email,
           password: args.password,
         }),
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 }

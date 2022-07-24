@@ -49,9 +49,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + args.user.token,
         },
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -64,9 +64,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + args.user.token,
         },
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -79,9 +79,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + args.user.token,
         },
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -95,9 +95,9 @@ function createExtraActions() {
           Authorization: "Bearer " + args.user.token,
         },
         body: JSON.stringify({ text: args.text, imageUrl: args.imageUrl }),
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -110,9 +110,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + args.user.token,
         },
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -125,9 +125,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + args.user.token,
         },
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -140,9 +140,9 @@ function createExtraActions() {
           "Content-Type": "application/json",
           Authorization: "Bearer " + args.user.token,
         },
-      }).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      });
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -159,9 +159,9 @@ function createExtraActions() {
           },
           body: JSON.stringify({ text: args.text }),
         }
-      ).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      );
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -177,9 +177,9 @@ function createExtraActions() {
             Authorization: "Bearer " + args.user.token,
           },
         }
-      ).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      );
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -195,9 +195,9 @@ function createExtraActions() {
             Authorization: "Bearer " + args.user.token,
           },
         }
-      ).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      );
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 
@@ -213,9 +213,9 @@ function createExtraActions() {
             Authorization: "Bearer " + args.user.token,
           },
         }
-      ).then((data) => data.json());
-      if (res.error) throw new Error(res.error);
-      return res;
+      );
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
     });
   }
 }
